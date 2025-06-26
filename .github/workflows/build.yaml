@@ -2,7 +2,7 @@ name: Build Docker Images
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, 'thedevelopnik/**' ]
     paths:
       - 'web/**'
       - 'backend/**'
