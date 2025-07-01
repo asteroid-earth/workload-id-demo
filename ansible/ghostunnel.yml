@@ -7,7 +7,7 @@
     ghostunnel_uid: 3001
     ghostunnel_gid: 3001
     # Environment variables - set these values as needed
-    workload_api_socket: "unix:///tmp/tbot/web.sock"
+    workload_api_socket: "unix:///tmp/tbot/workload.sock"
     ghostunnel_one_listen_addr: "127.0.0.1:8081"
     backend_one_addr: "a0610469e10564e4d9f82d9b1b3b1f97-2026179047.us-west-2.elb.amazonaws.com"
     backend_one_approved_spiffeid: "spiffe://mwidemo.cloud.gravitational.io/apps/w2w-demo/backend-1"
@@ -41,6 +41,15 @@
         group: ghostunnel
         mode: '0755'
 
+    - name: Add tbot dir in temp for sockets
+      ansible.builtin.file:
+        path: /tmp/tbot
+        state: directory
+        recurse: yes
+        owner: ghostunnel
+        group: ghostunnel
+        mode: '0755'
+
     - name: Create config file for tbot
       copy:
         content: |
@@ -53,7 +62,7 @@
             type: memory
           services:
           - type: workload-identity-api
-            listen: unix:///tmp/tbot/web.sock
+            listen: unix:///tmp/tbot/workload.sock
             selector:
               labels:
                 env: [w2w-demo]
@@ -150,6 +159,13 @@
         group: root
         mode: '0644'
       notify: reload systemd
+
+    - name: Start and enable tbot service
+      systemd:
+        name: tbot
+        state: started
+        enabled: yes
+        daemon_reload: yes
 
     - name: Start and enable ghostunnel1 service
       systemd:
