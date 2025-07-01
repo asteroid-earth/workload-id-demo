@@ -129,7 +129,7 @@ jobs:
       - name: Setup kubectl
         uses: azure/setup-kubectl@v3
         with:
-          version: '1.32'
+          version: 'v1.32.2'
 
       - name: Fetch Teleport binaries
         uses: teleport-actions/setup@v1
