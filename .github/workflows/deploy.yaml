@@ -142,11 +142,10 @@ jobs:
 
       - name: Deploy tbot DaemonSet
         run: |
-          ls -la /home/runner/work/workload-id-demo/workload-id-demo/k8s-out/
           helm upgrade --install tbot ./charts/tbot \
             --namespace tbot \
             --values ./charts/tbot/values.yaml \
-            --kubeconfig /home/runner/work/workload-id-demo/workload-id-demo/k8s-out/config
+            --kubeconfig /home/runner/work/workload-id-demo/workload-id-demo/k8s-out/kubeconfig.yaml
 
   #     - name: Deploy backend application
   #       run: |
