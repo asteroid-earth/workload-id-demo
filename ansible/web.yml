@@ -1,7 +1,7 @@
 ---
 - name: Deploy Workload ID Demo Web Application
   hosts: w2w-demo-web.mwidemo.cloud.gravitational.io
-  become: yes
+  remote_user: root
   vars:
     app_user: w2w-demo-web
     app_group: w2w-demo-web

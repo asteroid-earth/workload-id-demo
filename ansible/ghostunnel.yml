@@ -1,7 +1,7 @@
 ---
 - name: Setup Ghostunnel services
   hosts: w2w-demo-web.mwidemo.cloud.gravitational.io
-  become: yes
+  remote_user: root
   vars:
     ghostunnel_version: "v1.8.4"
     ghostunnel_uid: 3001
