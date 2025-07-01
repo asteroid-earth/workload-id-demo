@@ -77,7 +77,6 @@ jobs:
         run: |
           mkdir -p /home/runner/.aws
           cp ./action_support/aws_config /home/runner/.aws/config
-          mkdir /home/runner/.docker
           cp ./action_support/docker_config.json /home/runner/.docker/config.json
 
       - name: Login to Amazon ECR
