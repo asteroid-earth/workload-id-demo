@@ -207,12 +207,11 @@ jobs:
         env:
           ANSIBLE_CONFIG: ./action_support/ansible.cfg
         run: |
-          ls -la /home/runner/work/workload-id-demo/workload-id-demo/ssh-out/
           ansible-playbook -i ./ansible/hosts ./ansible/ghostunnel.yml
 
-      - name: Deploy web application
-        env:
-          ANSIBLE_CONFIG: ./action_support/ansible.cfg
-        run: |
-          ansible-playbook -i ./ansible/hosts ./ansible/web.yml \
-            -e "image_uri=${{ needs.build.outputs.web-image }}"
+      # - name: Deploy web application
+      #   env:
+      #     ANSIBLE_CONFIG: ./action_support/ansible.cfg
+      #   run: |
+      #     ansible-playbook -i ./ansible/hosts ./ansible/web.yml \
+      #       -e "image_uri=${{ needs.build.outputs.web-image }}"
