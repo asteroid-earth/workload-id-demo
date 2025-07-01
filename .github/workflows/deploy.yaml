@@ -18,6 +18,7 @@ env:
   ECR_REGISTRY: 668558765449.dkr.ecr.us-west-2.amazonaws.com
   ECR_REPOSITORY: mwi-demo-10bbb2a
   AWS_REGION: us-west-2
+  AWS_PROFILE: w2w-demo-deployment
 
 jobs:
   # Build and push Docker images
@@ -54,10 +55,13 @@ jobs:
           echo "tag=${TAG}" >> $GITHUB_OUTPUT
           echo "Generated tag: ${TAG}"
 
-      - name: Setup Teleport authentication
+      - name: Setup AWS helpers
         run: |
           wget https://rolesanywhere.amazonaws.com/releases/1.5.0/X86_64/Linux/aws_signing_helper
           chmod +x aws_signing_helper
+          wget https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.10.1/linux-amd64/docker-credential-ecr-login
+          mv docker-credential-ecr-login /usr/local/bin/
+          chmod +x /usr/local/bin/docker-credential-ecr-login
 
       - name: Fetch Teleport binaries
         uses: teleport-actions/setup@v1
@@ -73,10 +77,12 @@ jobs:
         run: |
           mkdir -p /home/runner/.aws
           cp ./action_support/aws_config /home/runner/.aws/config
+          mkdir /home/runner/.docker
+          cp ./action_support/docker_config.json /home/runner/.docker/config.json
 
       - name: Login to Amazon ECR
         run: |
-            aws ecr get-login-password --profile w2w-demo-deployment | docker login --username AWS --password-stdin $ECR_REGISTRY
+            docker login $ECR_REGISTRY
 
       - name: Build and push backend image (multi-arch)
         id: build-backend
