@@ -166,52 +166,52 @@ jobs:
             --kubeconfig /home/runner/work/workload-id-demo/workload-id-demo/k8s-out/kubeconfig.yaml
   
   # Deploy using Ansible (for VM deployments)
-  # deploy-ansible:
-  #   name: Deploy with Ansible
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: github.event_name != 'pull_request'
-  #   permissions:
-  #     id-token: write
-  #     contents: read
+  deploy-ansible:
+    name: Deploy with Ansible
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name != 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
     
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Setup Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.11'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-  #     - name: Install Ansible
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install ansible
+      - name: Install Ansible
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible
 
-  #     - name: Setup Teleport authentication
-  #       run: |
-  #         wget https://rolesanywhere.amazonaws.com/releases/1.5.0/X86_64/Linux/aws_signing_helper
-  #         chmod +x aws_signing_helper
+      - name: Setup Teleport authentication
+        run: |
+          wget https://rolesanywhere.amazonaws.com/releases/1.5.0/X86_64/Linux/aws_signing_helper
+          chmod +x aws_signing_helper
 
-  #     - name: Fetch Teleport binaries
-  #       uses: teleport-actions/setup@v1
-  #       with:
-  #         version: 17.5.2
+      - name: Fetch Teleport binaries
+        uses: teleport-actions/setup@v1
+        with:
+          version: 17.5.2
 
-  #     - name: Authenticate with Teleport
-  #       run: |
-  #         tbot start --oneshot -c ./action_support/bot.yaml
+      - name: Authenticate with Teleport
+        run: |
+          tbot start --oneshot -c ./action_support/bot.yaml
 
-  #     - name: Deploy ghostunnel
-  #       env:
-  #         ANSIBLE_CONFIG: ./action_support/ansible.cfg
-  #       run: |
-  #         ansible-playbook -i ansible/hosts ansible/ghostunnel.yml
+      - name: Deploy ghostunnel
+        env:
+          ANSIBLE_CONFIG: ./action_support/ansible.cfg
+        run: |
+          ansible-playbook -i ./ansible/hosts ./ansible/ghostunnel.yml
 
-  #     - name: Deploy web application
-  #       env:
-  #         ANSIBLE_CONFIG: ./action_support/ansible.cfg
-  #       run: |
-  #         ansible-playbook -i ansible/hosts ansible/web.yml \
-  #           -e "image_uri=${{ needs.build.outputs.web-image }}"
+      - name: Deploy web application
+        env:
+          ANSIBLE_CONFIG: ./action_support/ansible.cfg
+        run: |
+          ansible-playbook -i ./ansible/hosts ./ansible/web.yml \
+            -e "image_uri=${{ needs.build.outputs.web-image }}"
