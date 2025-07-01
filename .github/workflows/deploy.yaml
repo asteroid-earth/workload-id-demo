@@ -108,45 +108,44 @@ jobs:
       #     echo "Built multi-arch web image: ${IMAGE_URI}"
 
   # Deploy using Helm (for Kubernetes deployments)
-  # deploy-k8s:
-  #   name: Deploy to Kubernetes
-  #   runs-on: ubuntu-latest
-  #   needs: build
-  #   if: github.event_name != 'pull_request'
-  #   permissions:
-  #     id-token: write
-  #     contents: read
+  deploy-k8s:
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name != 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
     
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  #     - name: Setup Helm
-  #       uses: azure/setup-helm@v3
-  #       with:
-  #         version: '3.12.0'
+      - name: Setup Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.18.3'
 
-  #     - name: Setup kubectl
-  #       uses: azure/setup-kubectl@v3
-  #       with:
-  #         version: '1.28.0'
+      - name: Setup kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: '1.32.2'
 
-  #     - name: Fetch Teleport binaries
-  #       uses: teleport-actions/setup@v1
-  #       with:
-  #         version: 17.5.2
+      - name: Fetch Teleport binaries
+        uses: teleport-actions/setup@v1
+        with:
+          version: 17.5.2
 
-  #     - name: Authenticate with Teleport
-  #       run: |
-  #         tbot start --oneshot -c ./action_support/bot.yaml
+      - name: Authenticate with Teleport
+        run: |
+          tbot start --oneshot -c ./action_support/bot.yaml
 
-  #     - name: Deploy tbot DaemonSet
-  #       run: |
-  #         helm upgrade --install tbot ./charts/tbot \
-  #           --namespace workload-identity \
-  #           --create-namespace \
-  #           --values ./charts/tbot/values.yaml \
-  #           --kubeconfig /home/runner/work/workload-id-demo/workload-id-demo/k8s-out/config
+      - name: Deploy tbot DaemonSet
+        run: |
+          helm upgrade --install tbot ./charts/tbot \
+            --namespace tbot \
+            --values ./charts/tbot/values.yaml \
+            --kubeconfig /home/runner/work/workload-id-demo/workload-id-demo/k8s-out/config
 
   #     - name: Deploy backend application
   #       run: |
