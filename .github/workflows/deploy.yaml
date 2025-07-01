@@ -2,7 +2,7 @@ name: Build and Deploy Workload ID Demo
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, 'thedevelopnik/**' ]
     paths:
       - 'web/**'
       - 'backend/**'
