@@ -79,10 +79,6 @@ jobs:
           cp ./action_support/aws_config /home/runner/.aws/config
           cp ./action_support/docker_config.json /home/runner/.docker/config.json
 
-      - name: Login to Amazon ECR
-        run: |
-            docker login $ECR_REGISTRY
-
       - name: Build and push backend image (multi-arch)
         id: build-backend
         run: |
