@@ -170,7 +170,7 @@ jobs:
     name: Deploy with Ansible
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name != 'pull_request'
+    # if: github.event_name != 'pull_request'
     permissions:
       id-token: write
       contents: read
