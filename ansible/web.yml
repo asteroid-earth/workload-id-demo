@@ -86,6 +86,14 @@
         mode: '0755'
         state: directory
 
+    - name: Create AWS directory
+      file:
+        path: /home/{{ app_user }}/.aws
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: '0700'
+        state: directory
+
     - name: Configure AWS CLI for ECR authentication
       copy:
         dest: /home/{{ app_user }}/.aws/config
@@ -98,14 +106,6 @@
         owner: "{{ app_user }}"
         group: "{{ app_group }}"
         mode: '0600'
-        
-    - name: Create AWS directory
-      file:
-        path: /home/{{ app_user }}/.aws
-        owner: "{{ app_user }}"
-        group: "{{ app_group }}"
-        mode: '0700'
-        state: directory
 
     - name: Install AWS CLI
       snap:

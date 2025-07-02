@@ -37,6 +37,9 @@ tbot:
     services:
       - type: "workload-identity-api"
         listen: "unix:///run/tbot/sockets/workload.sock"
+        attestors:
+          kubernetes:
+            enabled: true
         selector:
           labels:
             env: ["w2w-demo"]

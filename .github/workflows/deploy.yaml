@@ -169,7 +169,7 @@ jobs:
   deploy-ansible:
     name: Deploy with Ansible
     runs-on: ubuntu-latest
-    # needs: build
+    needs: build
     # if: github.event_name != 'pull_request'
     permissions:
       id-token: write
