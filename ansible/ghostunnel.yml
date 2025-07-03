@@ -48,7 +48,7 @@
         recurse: yes
         owner: ghostunnel
         group: ghostunnel
-        mode: '0755'
+        mode: '0700'
 
     - name: Create config file for tbot
       copy:
