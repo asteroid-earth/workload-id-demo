@@ -9,10 +9,10 @@
     # Environment variables - set these values as needed
     workload_api_socket: "unix:///tmp/tbot/workload.sock"
     ghostunnel_one_listen_addr: "127.0.0.1:8081"
-    backend_one_addr: "a0610469e10564e4d9f82d9b1b3b1f97-2026179047.us-west-2.elb.amazonaws.com:443"
+    backend_one_addr: "internal-a81787beac9154dbeb36cad52203e802-1768298982.us-west-2.elb.amazonaws.com:443"
     backend_one_approved_spiffeid: "spiffe://mwidemo.cloud.gravitational.io/apps/w2w-demo/backend-1"
     ghostunnel_two_listen_addr: "127.0.0.1:8082"
-    backend_two_addr: "a1db4dee06da3454893ee3a92843c181-465313761.us-west-2.elb.amazonaws.com:443"
+    backend_two_addr: "internal-a1bdfdb9a2eb645fbad842afe7758dec-477733828.us-west-2.elb.amazonaws.com:443"
     backend_two_approved_spiffeid: "spiffe://mwidemo.cloud.gravitational.io/apps/w2w-demo/backend-2"
   
   tasks:

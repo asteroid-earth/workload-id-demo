@@ -7,7 +7,7 @@
     app_group: w2w-demo-web
     app_uid: 3000
     app_gid: 3000
-    app_directory: /w2w-demo
+    app_directory: /home/w2w-demo-web
     web_port: 8080
     ghostunnel1_port: 8081
     ghostunnel2_port: 8082
@@ -72,19 +72,11 @@
         uid: "{{ app_uid }}"
         group: "{{ app_group }}"
         shell: /bin/bash
-        home: "{{ app_directory }}"
+        home: "/home/{{ app_user }}"
         create_home: yes
         groups: docker
         append: yes
         state: present
-
-    - name: Create application directory
-      file:
-        path: "{{ app_directory }}"
-        owner: "{{ app_user }}"
-        group: "{{ app_group }}"
-        mode: '0755'
-        state: directory
 
     - name: Create AWS directory
       file:
@@ -133,9 +125,7 @@
         dest: /home/{{ app_user }}/.docker/config.json
         content: |
           {
-            "credHelpers": {
-              "668558765449.dkr.ecr.us-west-2.amazonaws.com": "ecr-login"
-            }
+            "credsStore": "ecr-login"
           }
         owner: "{{ app_user }}"
         group: "{{ app_group }}"
@@ -176,10 +166,10 @@
           ExecStart=/usr/bin/docker run -d \
             --name {{ container_name }} \
             --restart unless-stopped \
-            -p {{ web_port }}:8080 \
             -e WEB_PORT=8080 \
             -e WEB_GHOSTUNNEL_ONE_PORT={{ ghostunnel1_port }} \
             -e WEB_GHOSTUNNEL_TWO_PORT={{ ghostunnel2_port }} \
+            --network host \
             {{ web_image_uri }}
           ExecStop=/usr/bin/docker stop {{ container_name }}
           ExecStopPost=/usr/bin/docker rm {{ container_name }}
